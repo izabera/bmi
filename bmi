@@ -1,0 +1,25 @@
+#!/bin/bash
+
+printf '       '
+echo {100..330..10}
+
+height=${height-66}
+weight=$(( ${weight-140} / 10 * 10 ))
+
+for inches in {53..83}; do
+  printf " %d'%2d " "$((inches/12))" "$((inches%12))"
+  for lbs in {100..330..10}; do
+    bmi=$(( 703 * lbs / (inches * inches) ))
+      if (( bmi < 15 )); then colour=90
+    elif (( bmi < 17 )); then colour=135
+    elif (( bmi < 19 )); then colour=33
+    elif (( bmi < 26 )); then colour=46
+    elif (( bmi < 31 )); then colour=226
+    elif (( bmi < 36 )); then colour=202
+    elif (( bmi < 41 )); then colour=199
+    else                      colour=196
+    fi
+    printf '\33[%d;48;5;%s;38;5;16m %s ' "$(( (lbs == weight && inches == height) ? 7 : 0 ))" "$colour" "$bmi"
+  done
+  printf '\33[m\n'
+done
